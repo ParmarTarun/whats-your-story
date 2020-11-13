@@ -3,7 +3,7 @@ const stories = () => {
   return (
     <React.Fragment>
       <div className="container">
-        <h1>Read Stories</h1>
+        <h1>Create Stories</h1>
       </div>
     </React.Fragment>
   );
