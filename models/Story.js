@@ -3,14 +3,14 @@ const mongoose = require("mongoose");
 const StorySchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, "Title for story cannot be empty"],
+    required: [true, "Story without a title is not allowed."],
     unique: true,
     trim: true,
     maxlength: [40, "Title for story cannot be more than 40 characters."],
   },
   content: {
     type: String,
-    required: true,
+    required: [true, "Empty story not allowed."],
     maxlength: [200, "Story is too long, keep it shorter than 200 characters."],
   },
 });
