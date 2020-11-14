@@ -7,11 +7,11 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const stories = await Story.find({});
+        const stories = await Story.find({ public: true });
 
         res.status(200).json({ success: true, data: stories });
       } catch (e) {
-        res.status(400).json({ success: false, message:e.message });
+        res.status(400).json({ success: false, message: e.message });
       }
       break;
     case "POST":

@@ -13,6 +13,9 @@ const StorySchema = new mongoose.Schema({
     required: [true, "Empty story not allowed."],
     maxlength: [200, "Story is too long, keep it shorter than 200 characters."],
   },
+  public: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.models.Story || mongoose.model("Story", StorySchema);
