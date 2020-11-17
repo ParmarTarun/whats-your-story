@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
         <title>Stories App</title>
       </Head>
       <MyNavbar />
-      <div className="container">{children}</div>
+      <div className="container" style={{minHeight:"80vh"}}>{children}</div>
     </React.Fragment>
   );
 };

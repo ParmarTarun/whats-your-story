@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, FormControl, Button, Form } from "react-bootstrap";
 const myNavBar = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
@@ -19,9 +19,15 @@ const myNavBar = () => {
             <Nav.Link>Public Stories</Nav.Link>
           </Link>
         </Nav>
-        {/* <Form inline>
-          <FormControl type="text" placeholder="Search Users" className="mr-sm-2" />
-        </Form> */}
+        <Form inline>
+          {/* <FormControl type="text" placeholder="Search" className="mr1" /> */}
+          <Link href="/auth/login" passHref>
+            <Button className="header-btn sColor bt mr1">Sign In</Button>
+          </Link>
+          <Link href="/auth/register" passHref>
+            <Button className="header-btn sColor">Sign Up</Button>
+          </Link>
+        </Form>
       </Navbar.Collapse>
     </Navbar>
   );

@@ -25,7 +25,9 @@ export default async (req, res) => {
         .json({ success: false, message: "Incorrect credentials" });
 
     //generate token
-    const token = jwt.sign({ userId: foundUser._id }, process.env.SECRET_KEY);
+    const token = jwt.sign({ userId: foundUser._id }, process.env.SECRET_KEY, {
+      expiresIn: "1h",
+    });
 
     return res
       .status(200)

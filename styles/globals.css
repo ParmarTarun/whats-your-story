@@ -1,5 +1,8 @@
 :root {
   --primary-color: #343a40;
+  --secondary-color: #fafafa;
+  --error-color: red;
+  --info-color: #343a40;
 }
 
 html,
@@ -21,22 +24,11 @@ a {
   box-sizing: border-box;
 }
 
-.btn {
-  background: transparent;
-  text-transform: capitalize;
-  color: var(--primary-color);
-  border-color: var(--primary-color);
-  box-shadow: none;
-}
-.btn:hover, .btn:focus {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  box-shadow: none;
-}
+/* shortcut utills */
 .cp {
   cursor: pointer;
 }
-.fl{
+.fl {
   float: left;
 }
 .alive {
@@ -48,6 +40,54 @@ a {
 .mt3 {
   margin-top: 3rem;
 }
+.mtb3{
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
 .mr1 {
   margin-right: 1rem;
+}
+
+.bt {
+  background: transparent !important;
+}
+
+.sColor {
+  color: var(--secondary-color) !important;
+}
+
+.jcc {
+  justify-content: center !important;
+}
+/* default styles */
+#ERROR {
+  color: var(--error-color);
+}
+#LOADING {
+  color: var(--info-color);
+}
+.btn {
+  background: transparent;
+  text-transform: capitalize;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: none;
+}
+.btn:hover,
+.btn:focus {
+  background: var(--primary-color);
+  border-color: var(--secondary-color);
+  box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: (var(--primary-color));
+  box-shadow: none;
+}
+
+/* specific component styles */
+.form-container {
+  border: 1px solid var(--primary-color);
+  padding: 2rem;
+  border-radius: 15px;
 }
