@@ -9,10 +9,10 @@ const SignUp = () => {
   const [data, setData] = useState(registerForm);
   const [msg, setMsg] = useState({ id: "", content: "" });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-    setMsg("");
+    setMsg({id:"", content:""});
   };
   const handleSubmit = async () => {
     setMsg({ id: "LOADING", content: "Loading..." });
@@ -82,7 +82,6 @@ const SignUp = () => {
                 type="password"
                 name="passwordR"
                 placeholder="Password"
-                name="passwordR"
                 onChange={handleChange}
               />
             </Form.Group>

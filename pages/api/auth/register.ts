@@ -2,9 +2,10 @@ import bcryptjs from "bcryptjs";
 import dbConnect from "../../../utils/dbConnect";
 import User from "../../../models/User";
 import { registerUser } from "../../../utils/validations";
+import { NextApiRequest, NextApiResponse } from "next";
 dbConnect();
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST")
     return res.status(404).json({ message: "Page not found" });
 
@@ -34,7 +35,9 @@ export default async (req, res) => {
         .status(200)
         .json({ success: true, message: "Registered Successfully", data: {} });
 
-    return res.status(400).json({ success: false, message: e.message });
+    return res
+      .status(400)
+      .json({ success: false, message: "Failed to save user" });
   } catch (e) {
     res.status(400).json({ success: false, message: e.message });
   }

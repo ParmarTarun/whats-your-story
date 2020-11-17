@@ -10,10 +10,10 @@ const SignIn = () => {
   const [data, setData] = useState(loginForm);
   const [msg, setMsg] = useState({ id: "", content: "" });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-    setMsg("");
+    setMsg({ id: "", content: "" });
   };
   const handleSubmit = async () => {
     setMsg({ id: "LOADING", content: "Loading..." });

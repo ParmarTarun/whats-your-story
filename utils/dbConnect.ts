@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
+declare const process: {
+  env: {
+    SECRET_KEY: string;
+    MONGO_URI: string;
+  };
+};
 
-const connection = {};
+const connection = {
+  isConnected: 0,
+};
 
 const dbConnect = async () => {
   if (connection.isConnected) return;

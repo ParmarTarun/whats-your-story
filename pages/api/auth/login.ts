@@ -1,10 +1,16 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { NextApiRequest, NextApiResponse } from "next";
 import User from "../../../models/User";
 import dbConnect from "../../../utils/dbConnect";
 dbConnect();
-
-export default async (req, res) => {
+declare const process: {
+  env: {
+    SECRET_KEY: string;
+    MONGO_URI: string;
+  };
+};
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST")
     return res.status(404).json({ message: "Page not found" });
 
@@ -31,7 +37,7 @@ export default async (req, res) => {
 
     return res
       .status(200)
-      .json({ success: true, message: `Welcome ${email}`, data: token });
+      .json({ success: true, message: `Welcome ${email}`, data: { token } });
   } catch (e) {
     res.status(400).json({ success: false, message: e.message });
   }

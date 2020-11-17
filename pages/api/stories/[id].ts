@@ -1,8 +1,9 @@
 import dbConnect from "../../../utils/dbConnect";
 import Story from "../../../models/Story";
+import { NextApiRequest, NextApiResponse } from "next";
 dbConnect();
 
-export default async (req, res) => {
+export default async (req:NextApiRequest, res:NextApiResponse) => {
   const {
     query: { id },
     method,

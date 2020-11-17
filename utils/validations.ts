@@ -12,7 +12,7 @@ export const registerUser = yup.object().shape({
   name: yup.string().max(15).required(),
 });
 
-export const noEmpty = (data) => {
+export const noEmpty = (data: any) => {
   let allOk = true;
   Object.keys(data).forEach((key) => {
     if (data[key] === "") allOk = false;

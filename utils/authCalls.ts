@@ -1,6 +1,6 @@
 import * as url from "./urls";
 
-export const login = (data) => {
+export const login = async (data: object) => {
   return fetch(url.login, {
     method: "POST",
     headers: {
@@ -10,12 +10,13 @@ export const login = (data) => {
   })
     .then((res) => res.json())
     .then(({ success, data, message }) => {
-      if (success) return data;
+      localStorage.setItem("token", data.token);
+      if (success) return data.token;
       throw new Error(message);
     });
 };
 
-export const register = (data) => {
+export const register = async (data: object) => {
   return fetch(url.register, {
     method: "POST",
     headers: {
