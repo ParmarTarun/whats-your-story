@@ -40,7 +40,10 @@ a {
 .mt3 {
   margin-top: 3rem;
 }
-.mtb3{
+.mb3 {
+  margin-bottom: 3rem;
+}
+.mtb3 {
   margin-top: 3rem;
   margin-bottom: 3rem;
 }
@@ -59,7 +62,20 @@ a {
 .jcc {
   justify-content: center !important;
 }
+.jcb {
+  justify-content: space-between !important;
+}
 /* default styles */
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: var(--primary-color);
+  box-shadow: none;
+  border-color: var(--primary-color);
+}
+.custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
+  background-color: var(--secondart-color);
+  box-shadow: none;
+  border-color: var(--primary-color);
+}
 #ERROR {
   color: var(--error-color);
 }
@@ -72,6 +88,16 @@ a {
   color: var(--primary-color);
   border-color: var(--primary-color);
   box-shadow: none;
+}
+.icon-btn{
+  border:0
+}
+.fab-btn{
+  position: fixed;  
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
 }
 .btn:hover,
 .btn:focus {

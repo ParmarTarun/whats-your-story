@@ -3,7 +3,7 @@ import Story from "../../../models/Story";
 import { NextApiRequest, NextApiResponse } from "next";
 dbConnect();
 
-export default async (req:NextApiRequest, res:NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     query: { id },
     method,
@@ -22,6 +22,22 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
       }
 
       break;
+
+    case "POST":
+      try {
+        const story = await Story.create(req.body);
+
+        res.status(201).json({ success: true, data: story });
+      } catch (e) {
+        //uniqueness
+        if (e.code === 11000)
+          res
+            .status(400)
+            .json({ success: false, message: "Please provide a unique title" });
+        else res.status(400).json({ success: false, message: e.message });
+      }
+      break;
+
     case "PUT":
       try {
         const story = await Story.findByIdAndUpdate(id, req.body, {

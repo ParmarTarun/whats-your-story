@@ -1,11 +1,11 @@
 import React from "react";
 import Router from "next/router";
-import { Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faHeart } from "@fortawesome/free-solid-svg-icons";
-import * as url from "../../utils/urls";
+import * as url from "../../../utils/urls";
 import { GetServerSideProps } from "next";
-import { Story } from "../../utils/customTypes";
+import { Story } from "../../../utils/customTypes";
 
 const FullStory = ({ story }: { story: Story }) => {
   return (
@@ -32,7 +32,7 @@ const FullStory = ({ story }: { story: Story }) => {
 export const getServerSideProps: GetServerSideProps = async ({
   query: { id },
 }) => {
-  const res = await fetch(url.getStory + id);
+  const res = await fetch(url.story + id);
   const json = await res.json();
   return { props: { story: json.data } };
 };

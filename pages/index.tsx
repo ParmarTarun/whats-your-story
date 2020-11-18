@@ -32,7 +32,7 @@ const Index = () => {
               </Link>
             </Col>
             <Col className="text-left mb-4" sm={12} lg={6}>
-              <Link href="/create">
+              <Link href="/stories/create">
                 <Card className="cp alive">
                   <Card.Body>
                     <h2>Create</h2>

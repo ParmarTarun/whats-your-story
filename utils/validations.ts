@@ -9,7 +9,7 @@ export const registerUser = yup.object().shape({
     )
     .required(),
   email: yup.string().email().required(),
-  name: yup.string().max(15).required(),
+  name: yup.string().max(15,"Title too big").required(),
 });
 
 export const noEmpty = (data: any) => {

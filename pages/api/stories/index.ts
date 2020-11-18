@@ -15,16 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(400).json({ success: false, message: e.message });
       }
       break;
-    case "POST":
-      try {
-        const story = await Story.create(req.body);
-
-        res.status(201).json({ success: true, data: story });
-      } catch (e) {
-        res.status(400).json({ success: false, message: e.message });
-      }
-      break;
-
+    
     default:
       res.status(404).json({ success: false });
       break;

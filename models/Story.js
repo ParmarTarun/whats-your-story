@@ -4,7 +4,7 @@ const StorySchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, "Story without a title is not allowed."],
-    unique: true,
+    unique: [true, "Make your story title unique"],
     trim: true,
     maxlength: [40, "Title for story cannot be more than 40 characters."],
   },

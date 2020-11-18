@@ -8,6 +8,7 @@ import "nprogress/nprogress.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/globals.css";
 
+NProgress.configure({ showSpinner: false });
 //Binding events.
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
