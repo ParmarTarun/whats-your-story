@@ -8,16 +8,25 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { Card, Button, Row, Col, Modal } from "react-bootstrap";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextApiRequest } from "next";
+import Router from "next/router";
+import Error, { ErrorProps } from "next/error";
 
 import * as url from "../../utils/urls";
 import { Story } from "../../utils/customTypes";
 import { deleteStory } from "../../utils/storyCalls";
-import Router from "next/router";
+import ConfirmationModal from "../../components/common/ConfirmationModal";
+import AddStoryFab from "../../components/common/AddStoryFab";
 
-const AllStories = ({ stories }: { stories: Array<Story> }) => {
+const AllStories = ({
+  stories,
+  error,
+}: {
+  stories: Array<Story>;
+  error: ErrorProps;
+}) => {
   const [show, setShow] = useState(false);
-  const [idToDelete, setidToDelete] = useState<String>("");
+  const [idToDelete, setIdToDelete] = useState<String>("");
 
   const handleDelete = (id: String) => {
     setShow(false);
@@ -27,18 +36,20 @@ const AllStories = ({ stories }: { stories: Array<Story> }) => {
   };
 
   const showConfirmation = (id: String) => {
-    setidToDelete(id);
+    setIdToDelete(id);
     setShow(true);
   };
+
+  if (error.statusCode >= 400) return <Error {...error} />;
 
   return (
     <Row className="mtb3">
       {stories.length === 0 ? (
         <Col>
           <Row className="jcc align-items-center" noGutters>
-            <FontAwesomeIcon icon={faExclamation} size="2x"/>
+            <FontAwesomeIcon icon={faExclamation} size="2x" />
             <span className="ml-3">No Data to show</span>
-          </Row>  
+          </Row>
         </Col>
       ) : (
         stories.map(({ _id, title }, i) => (
@@ -79,6 +90,7 @@ const AllStories = ({ stories }: { stories: Array<Story> }) => {
           </Col>
         ))
       )}
+      <AddStoryFab />
       {show && (
         <ConfirmationModal
           show={show}
@@ -90,32 +102,17 @@ const AllStories = ({ stories }: { stories: Array<Story> }) => {
     </Row>
   );
 };
-type ModalProps = {
-  show: boolean;
-  hide: any;
-  cb: (id: String) => void;
-  id: String;
-};
-const ConfirmationModal = ({ show, hide, cb, id }: ModalProps) => {
-  return (
-    <Modal size="sm" show={show} onHide={hide} centered>
-      <Modal.Header closeButton>Are you sure?</Modal.Header>
-      <Modal.Body>
-        <Row className="jcc" noGutters>
-          <Button className="mr1" onClick={() => cb(id)}>
-            YES
-          </Button>
-          <Button onClick={hide}>NO</Button>
-        </Row>
-      </Modal.Body>
-    </Modal>
-  );
-};
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(url.stories);
-  const json = await res.json();
-  return { props: { stories: json.data } };
+  let json = { data: {} };
+  if (res.status < 400) json = await res.json();
+  return {
+    props: {
+      error: { statusCode: res.status, title: res.statusText },
+      stories: json.data,
+    },
+  };
 };
 
 export default AllStories;

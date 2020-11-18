@@ -5,8 +5,9 @@ import * as url from "../../../utils/urls";
 import { GetServerSideProps } from "next";
 import { noEmpty } from "../../../utils/validations";
 import { updateStory } from "../../../utils/storyCalls";
+import Error, { ErrorProps } from "next/error";
 
-const EditStory = ({ story }: { story: any }) => {
+const EditStory = ({ story, error }: { story: any; error: ErrorProps }) => {
   const [data, setData] = useState(story);
   const [msg, setMsg] = useState({ id: "", content: "" });
 
@@ -27,9 +28,10 @@ const EditStory = ({ story }: { story: any }) => {
       return;
     }
     updateStory(story._id, data)
-      .then((result) => Router.push("/stories/read/" + story._id))
+      .then((result) => Router.replace("/stories/read/" + story._id))
       .catch((e) => setMsg({ id: "ERROR", content: e.message }));
   };
+  if (error.statusCode >= 400) return <Error {...error} />;
   return (
     <div className="mt3">
       <Row className="jcc">
@@ -92,8 +94,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   query: { id },
 }) => {
   const res = await fetch(url.story + id);
-  const json = await res.json();
-  return { props: { story: json.data } };
+  let json = { data: {} };
+  if (res.status < 400) json = await res.json();
+  return {
+    props: {
+      story: json.data,
+      error: { statusCode: res.status, title: res.status },
+    },
+  };
 };
 
 export default EditStory;
