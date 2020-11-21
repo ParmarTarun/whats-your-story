@@ -1,13 +1,20 @@
 import dbConnect from "../../../utils/dbConnect";
 import Story from "../../../models/Story";
 import { NextApiRequest, NextApiResponse } from "next";
+import { isTokenValid } from "../../../utils/validations";
 dbConnect();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     query: { id },
     method,
+    headers,
+    body,
   } = req;
+
+  const writer = isTokenValid(headers);
+  if (!writer)
+    return res.status(401).json({ success: false, message: "Invalid token" });
 
   switch (method) {
     case "GET":
@@ -24,45 +31,67 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       break;
 
     case "POST":
+      let newStory = { ...body, writer };
       try {
-        const story = await Story.create(req.body);
+        const story = await Story.create(newStory);
 
-        res.status(201).json({ success: true, data: story });
+        return res.status(201).json({ success: true, data: story });
       } catch (e) {
         //uniqueness
         if (e.code === 11000)
-          res
+          return res
             .status(400)
             .json({ success: false, message: "Please provide a unique title" });
-        else res.status(400).json({ success: false, message: e.message });
+        else
+          return res.status(400).json({ success: false, message: e.message });
       }
       break;
 
     case "PUT":
       try {
-        const story = await Story.findByIdAndUpdate(id, req.body, {
+        const storyToUpdate = await Story.findById(id);
+        if (!storyToUpdate)
+          return res
+            .status(400)
+            .json({ success: false, message: "Invalid story" });
+        if (storyToUpdate.writer.toString() !== writer)
+          return res
+            .status(400)
+            .json({ success: false, message: "Invalid user" });
+
+        const story = await Story.findByIdAndUpdate(id, body, {
           new: true,
           runValidators: true,
         });
 
-        if (!story) return res.status(400).json({ success: false });
-
-        res.status(200).json({ success: true, data: story });
+        return res.status(200).json({ success: true, data: story });
       } catch (e) {
-        res.status(400).json({ success: false });
+        //uniqueness
+        if (e.code === 11000)
+          return res
+            .status(400)
+            .json({ success: false, message: "Please provide a unique title" });
+        else
+          return res.status(400).json({ success: false, message: e.message });
       }
-      break;
+
     case "DELETE":
       try {
-        const story = await Story.deleteOne({ _id: id });
+        const storyToDelete = await Story.findById(id);
+        if (!storyToDelete)
+          return res
+            .status(400)
+            .json({ success: false, message: "Invalid story" });
+        if (storyToDelete.writer.toString() !== writer)
+          return res
+            .status(400)
+            .json({ success: false, message: "Invalid user" });
+        await Story.deleteOne({ _id: id });
 
-        if (!story) return res.status(400).json({ success: false });
-
-        res.status(200).json({ success: true, data: {} });
+        return res.status(200).json({ success: true, data: {} });
       } catch (e) {
-        res.status(400).json({ success: false });
+        return res.status(400).json({ success: false });
       }
-      break;
 
     default:
       break;

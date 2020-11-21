@@ -15,7 +15,9 @@ const StorySchema = new mongoose.Schema({
   },
   public: {
     type: Boolean,
+    default: true,
   },
+  writer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });
 
 module.exports = mongoose.models.Story || mongoose.model("Story", StorySchema);

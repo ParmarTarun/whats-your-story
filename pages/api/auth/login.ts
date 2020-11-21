@@ -11,8 +11,7 @@ declare const process: {
   };
 };
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST")
-    return res.status(404).json({ message: "Page not found" });
+  if (req.method !== "POST") return res.status(404).json({ success: false });
 
   const { email, password } = req.body;
   try {
