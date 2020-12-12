@@ -11,10 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     headers,
     body,
   } = req;
-
-  const writer = isTokenValid(headers);
-  if (!writer)
-    return res.status(401).json({ success: false, message: "Invalid token" });
+  let writer;
 
   switch (method) {
     case "GET":
@@ -22,13 +19,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const story = await Story.findById(id);
 
         if (!story) return res.status(400).json({ success: false });
+        if (!story.public) {
+          //story is private and can only be seen by followers or user himself
+          if (story.writer.toString() !== isTokenValid(headers))
+            return res.status(401).json({ success: false });
+        }
 
-        res.status(200).json({ success: true, data: story });
+        return res.status(200).json({ success: true, data: story });
       } catch (e) {
-        res.status(400).json({ success: false });
+        return res.status(400).json({ success: false });
       }
-
-      break;
 
     case "POST":
       let newStory = { ...body, writer };

@@ -1,5 +1,38 @@
 import * as url from "./urls";
 
+export const getMyStories = async () => {
+  const token = localStorage.getItem("token");
+  return fetch(url.mystories, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then(({ success, data, message }) => {
+      if (success) return data;
+      throw new Error(message);
+    });
+};
+export const getStory = async (id:any) => {
+  console.log(id)
+  const token = localStorage.getItem("token");
+  return fetch(url.story + id, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then(({ success, data, message }) => {
+      console.log("dad", data)
+      if (success) return data;
+      throw new Error(message);
+    });
+};
+
 export const createStory = async (data: object) => {
   const token = localStorage.getItem("token");
   return fetch(url.story + "new", {

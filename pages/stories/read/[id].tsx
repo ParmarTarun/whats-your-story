@@ -1,17 +1,28 @@
-import React from "react";
-import Router from "next/router";
+import React, { useState, useEffect } from "react";
+import Router, { useRouter } from "next/router";
 import { Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faHeart } from "@fortawesome/free-solid-svg-icons";
-import Error, { ErrorProps } from "next/error";
-import { GetServerSideProps } from "next";
+import Error from "next/error";
+import { getStory } from "../../../utils/storyCalls";
+import { createStoryForm } from "../../../utils/formobjects";
 
-import * as url from "../../../utils/urls";
-import { Story } from "../../../utils/customTypes";
+const FullStory = () => {
+  const router = useRouter();
+  const id = router.query.id;
+  const [story, setStory] = useState(createStoryForm);
+  const [error, setError] = useState({
+    statusCode: 200,
+    title: "OK",
+  });
 
-const FullStory = ({ story, error }: { story: Story; error: ErrorProps }) => {
+  useEffect(() => {
+    getStory(id)
+      .then((story) => setStory(story))
+      .catch((e) => setError({ statusCode: 400, title: e.message }));
+  }, []);
+
   if (error.statusCode >= 400) return <Error {...error} />;
-
   return (
     <div className="mt3">
       <Row className="align-items-center justify-content-between" noGutters>
@@ -31,20 +42,6 @@ const FullStory = ({ story, error }: { story: Story; error: ErrorProps }) => {
       </Row>
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async ({
-  query: { id },
-}) => {
-  const res = await fetch(url.story + id);
-  let json = { data: "" };
-  if (res.status < 400) json = await res.json();
-  return {
-    props: {
-      story: json.data,
-      error: { statusCode: res.status, title: res.statusText },
-    },
-  };
 };
 
 export default FullStory;

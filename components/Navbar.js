@@ -19,6 +19,10 @@ const myNavBar = () => {
           <Link href="/stories" passHref>
             <Nav.Link>Public Stories</Nav.Link>
           </Link>
+
+          <Link href="/stories/private" passHref>
+            <Nav.Link>My Stories</Nav.Link>
+          </Link>
         </Nav>
 
         <Link href="/auth/login" passHref>

@@ -10,8 +10,10 @@ export const login = async (data: object) => {
   })
     .then((res) => res.json())
     .then(({ success, data, message }) => {
-      localStorage.setItem("token", data.token);
-      if (success) return data.token;
+      if (success) {
+        localStorage.setItem("token", data.token);
+        return data.token;
+      }
       throw new Error(message);
     });
 };
