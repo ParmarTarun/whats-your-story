@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     //hashing password
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
-    const savedUser = await User({ email, password: hashedPassword }).save();
+    const savedUser = await new User({ email, password: hashedPassword }).save();
     if (savedUser)
       return res
         .status(200)
