@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://whats-your-story.demomode.vercel.app/";
 
 //auth
 export const login = `${BASE_URL}/api/auth/login`;
